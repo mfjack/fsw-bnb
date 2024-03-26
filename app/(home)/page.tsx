@@ -1,14 +1,9 @@
-'use client';
-
-import { signIn, signOut, useSession } from 'next-auth/react';
-import Image from 'next/image';
+import Search from './_components/search';
 
 const Home = () => {
-	const { data } = useSession();
-
 	return (
 		<div>
-			
+			<Search />
 		</div>
 	);
 };
