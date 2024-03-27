@@ -1,10 +1,12 @@
-import Search from './_components/search';
+import QuickSearch from './_components/quickSearch';
+import TripSearch from './_components/tripSearch';
 
 const Home = () => {
 	return (
-		<div>
-			<Search />
-		</div>
+		<>
+			<TripSearch />
+			<QuickSearch />
+		</>
 	);
 };
 
