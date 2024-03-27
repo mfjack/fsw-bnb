@@ -5,7 +5,7 @@ const RecommendedTrip = async () => {
 	const data = await fetch('http://localhost:3000/hello').then(res => res.json());
 
 	return (
-		<section className='container mx-auto p-5'>
+		<section className='container mx-auto mt-5 px-5'>
 			<div className='flex items-center'>
 				<div className='w-full h-[1px] bg-grayLighter'></div>
 				<h2 className='px-4 font-medium text-grayPrimary whitespace-nowrap'>Destinos Recomendados</h2>

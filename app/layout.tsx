@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
-import './_style/globals.css';
-import { NextAuthProvider } from '@/providers/auth';
+import './globals.css';
+import { NextAuthProvider } from '@/app/_providers/auth';
 import Header from './_components/header';
+import Footer from './_components/footer';
 
 const poppins = Poppins({
 	subsets: ['latin'],
@@ -25,6 +26,7 @@ export default function RootLayout({
 				<NextAuthProvider>
 					<Header />
 					{children}
+					<Footer />
 				</NextAuthProvider>
 			</body>
 		</html>
