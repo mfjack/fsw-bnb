@@ -9,33 +9,31 @@ const QuickSearch = () => {
 				<div className='w-full h-[1px] bg-grayLighter'></div>
 			</div>
 
-			<div className='flex mt-5'>
-				<div className='w-full flex justify-between items-center'>
-					<Image
-						src='/hotel.svg'
-						alt='Hotel'
-						width={48}
-						height={48}
-					/>
-					<Image
-						src='/fazenda.svg'
-						alt='Fazenda'
-						width={48}
-						height={48}
-					/>
-					<Image
-						src='/chale.svg'
-						alt='Chalé'
-						width={48}
-						height={48}
-					/>
-					<Image
-						src='/pousada.svg'
-						alt='Pousada'
-						width={48}
-						height={48}
-					/>
-				</div>
+			<div className='w-full mt-5 flex justify-between items-center'>
+				<Image
+					src='/hotel.svg'
+					alt='Hotel'
+					width={48}
+					height={48}
+				/>
+				<Image
+					src='/fazenda.svg'
+					alt='Fazenda'
+					width={48}
+					height={48}
+				/>
+				<Image
+					src='/chale.svg'
+					alt='Chalé'
+					width={48}
+					height={48}
+				/>
+				<Image
+					src='/pousada.svg'
+					alt='Pousada'
+					width={48}
+					height={48}
+				/>
 			</div>
 		</section>
 	);
