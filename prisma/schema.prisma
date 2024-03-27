@@ -24,6 +24,8 @@ model Trip {
   highlights   String[]
   maxGuests    Int
   reservations TripReservation[]
+  countryCode  String
+  recommended  Boolean           @default(false)
 }
 
 model TripReservation {
@@ -74,7 +76,7 @@ model User {
   sessions      Session[]
   reservations  TripReservation[]
 }
- 
+
 model VerificationToken {
   identifier String
   token      String   @unique
