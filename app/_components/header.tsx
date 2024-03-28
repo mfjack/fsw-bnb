@@ -2,6 +2,7 @@
 
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 import { AiOutlineMenu } from 'react-icons/ai';
 
@@ -23,12 +24,14 @@ const Header = () => {
 
 	return (
 		<header className='container mx-auto p-5 py-0 h-20 flex justify-between items-center'>
-			<Image
-				src='/logo.svg'
-				alt='Logotipo'
-				width={32}
-				height={32}
-			/>
+			<Link href='/'>
+				<Image
+					src='/logo.svg'
+					alt='Logotipo'
+					width={32}
+					height={32}
+				/>
+			</Link>
 
 			{status === 'unauthenticated' && (
 				<button

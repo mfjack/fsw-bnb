@@ -1,5 +1,6 @@
 import { Trip } from '@prisma/client';
 import Image from 'next/image';
+import Link from 'next/link';
 import ReactCountryFlag from 'react-country-flag';
 
 interface TripItemProps {
@@ -8,31 +9,33 @@ interface TripItemProps {
 
 const TripItem = ({ trip }: TripItemProps) => {
 	return (
-		<section className='flex flex-col gap-0.5'>
-			<div className='relative h-[280px] w-[280px]'>
-				<Image
-					className='rounded-lg shadow-md'
-					style={{ objectFit: 'cover' }}
-					src={trip.coverImage}
-					alt={trip.name}
-					fill
-				/>
-			</div>
+		<Link href={`/tripDetail/${trip.id}`}>
+			<section className='flex flex-col gap-0.5'>
+				<div className='relative h-[280px] w-[280px]'>
+					<Image
+						className='rounded-lg shadow-md'
+						style={{ objectFit: 'cover' }}
+						src={trip.coverImage}
+						alt={trip.name}
+						fill
+					/>
+				</div>
 
-			<h3 className='text-primaryDarker font-medium text-sm mt-2'>{trip.name}</h3>
+				<h3 className='text-primaryDarker font-medium text-sm mt-2'>{trip.name}</h3>
 
-			<div className='flex items-center gap-2'>
-				<ReactCountryFlag
-					countryCode={trip.countryCode}
-					svg
-				/>
-				<p className='text-xs text-grayPrimary'>{trip.location}</p>
-			</div>
+				<div className='flex items-center gap-2'>
+					<ReactCountryFlag
+						countryCode={trip.countryCode}
+						svg
+					/>
+					<p className='text-xs text-grayPrimary'>{trip.location}</p>
+				</div>
 
-			<p className='text-xs text-grayPrimary'>
-				<span className='text-primary font-medium'>R${trip.pricePerDay.toString()}</span> por dia
-			</p>
-		</section>
+				<p className='text-xs text-grayPrimary'>
+					<span className='text-primary font-medium'>R${trip.pricePerDay.toString()}</span> por dia
+				</p>
+			</section>
+		</Link>
 	);
 };
 
