@@ -59,7 +59,7 @@ const Header = () => {
 					/>
 
 					{menuIsOpen && (
-						<div className='absolute right-0 top-14 w-full h-full flex flex-col justify-center items-center bg-white border border-solid rounded-lg shadow-md p-2'>
+						<div className='z-50 absolute right-0 top-14 w-full h-full flex flex-col justify-center items-center bg-white border border-solid rounded-lg shadow-md p-2'>
 							<button
 								className='text-primary text-sm font-semibold'
 								onClick={handleLogoutClick}

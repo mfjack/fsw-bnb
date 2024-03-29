@@ -16,7 +16,7 @@ const TripHighlights = ({ highlights }: TripHighlightsProps) => {
 						key={highlight}
 					>
 						<Image
-							src={'/check-icon.svg'}
+							src='/check-icon.svg'
 							alt={highlight}
 							width={16}
 							height={16}
