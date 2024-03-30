@@ -3,15 +3,18 @@
 import Button from '@/app/_components/button';
 import DatePicker from '@/app/_components/datePicker';
 import Input from '@/app/_components/input';
+import { differenceInDays } from 'date-fns';
+import { difference } from 'next/dist/build/utils';
 import { Controller, useForm } from 'react-hook-form';
 
 interface TripReservationProps {
 	tripStartDate: Date;
 	tripEndDate: Date;
 	maxGuests?: number;
+	pricePerDay: number;
 }
 
-const TripReservation = ({ maxGuests, tripStartDate, tripEndDate }: TripReservationProps) => {
+const TripReservation = ({ maxGuests, tripStartDate, tripEndDate, pricePerDay }: TripReservationProps) => {
 	const {
 		register,
 		handleSubmit,
@@ -25,6 +28,7 @@ const TripReservation = ({ maxGuests, tripStartDate, tripEndDate }: TripReservat
 	};
 
 	const startDate = watch('startDate');
+	const endDate = watch('endDate');
 
 	return (
 		<section className='container mx-auto flex flex-col p-5 gap-2'>
@@ -50,7 +54,6 @@ const TripReservation = ({ maxGuests, tripStartDate, tripEndDate }: TripReservat
 								selected={field.value}
 								error={!!errors.startDate}
 								errorMessage={errors.startDate?.message?.toString()}
-								minDate={tripStartDate}
 							/>
 						)}
 					/>
@@ -93,7 +96,9 @@ const TripReservation = ({ maxGuests, tripStartDate, tripEndDate }: TripReservat
 
 				<div className='flex justify-between mt-2'>
 					<p className='text-sm font-medium text-primaryDarker'>Total:</p>
-					<p className='text-sm font-medium text-primaryDarker'>R$</p>
+					<p className='text-sm font-medium text-primaryDarker'>
+						R$ {startDate && endDate ? differenceInDays(endDate, startDate) * pricePerDay : 'R$ 0.00'}
+					</p>
 				</div>
 
 				<div className='pb-5 border-b border-grayLighter'>
