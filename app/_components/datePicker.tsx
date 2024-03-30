@@ -1,10 +1,9 @@
-'use client';
-
 import { LegacyRef, forwardRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 import _DatePicker, { ReactDatePickerProps, registerLocale } from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import { ptBR } from 'date-fns/locale/pt-BR';
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 registerLocale('pt-BR', ptBR);
 
