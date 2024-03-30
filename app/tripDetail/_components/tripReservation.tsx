@@ -3,24 +3,28 @@
 import Button from '@/app/_components/button';
 import DatePicker from '@/app/_components/datePicker';
 import Input from '@/app/_components/input';
-import { Trip } from '@prisma/client';
 import { Controller, useForm } from 'react-hook-form';
 
 interface TripReservationProps {
-	trip: Trip;
+	tripStartDate: Date;
+	tripEndDate: Date;
+	maxGuests?: number;
 }
 
-const TripReservation = ({ trip }: TripReservationProps) => {
+const TripReservation = ({ maxGuests, tripStartDate, tripEndDate }: TripReservationProps) => {
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 		control,
+		watch,
 	} = useForm();
 
 	const onSubmit = (data: any) => {
 		console.log({ data });
 	};
+
+	const startDate = watch('startDate');
 
 	return (
 		<section className='container mx-auto flex flex-col p-5 gap-2'>
@@ -42,33 +46,33 @@ const TripReservation = ({ trip }: TripReservationProps) => {
 							<DatePicker
 								className='w-full'
 								placeholderText='Data de Início'
-								// onChange={field.onChange}
-								// value={field.value}
+								onChange={field.onChange}
+								selected={field.value}
 								error={!!errors.startDate}
 								errorMessage={errors.startDate?.message?.toString()}
-								{...field}
+								minDate={tripStartDate}
 							/>
 						)}
 					/>
-					
+
 					<Controller
 						name='endDate'
+						control={control}
 						rules={{
 							required: {
 								value: true,
 								message: 'Data final é obrigatória',
 							},
 						}}
-						control={control}
 						render={({ field }) => (
 							<DatePicker
 								className='w-full'
 								placeholderText='Data Final'
-								// onChange={field.onChange}
-								// value={field.value}
+								onChange={field.onChange}
+								selected={field.value}
 								error={!!errors.endDate}
 								errorMessage={errors.endDate?.message?.toString()}
-								{...field}
+								minDate={startDate ?? tripStartDate}
 							/>
 						)}
 					/>
@@ -76,7 +80,7 @@ const TripReservation = ({ trip }: TripReservationProps) => {
 
 				<Input
 					type='number'
-					placeholder={`Número de hóspedes (max: ${trip.maxGuests})`}
+					placeholder={`Número de hóspedes (max: ${maxGuests})`}
 					{...register('guests', {
 						required: {
 							value: true,
@@ -89,7 +93,7 @@ const TripReservation = ({ trip }: TripReservationProps) => {
 
 				<div className='flex justify-between mt-2'>
 					<p className='text-sm font-medium text-primaryDarker'>Total:</p>
-					<p className='text-sm font-medium text-primaryDarker'>R${trip.pricePerDay.toString()}</p>
+					<p className='text-sm font-medium text-primaryDarker'>R$</p>
 				</div>
 
 				<div className='pb-5 border-b border-grayLighter'>
