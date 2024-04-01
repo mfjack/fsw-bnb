@@ -4,6 +4,7 @@ import Button from '@/app/_components/button';
 import DatePicker from '@/app/_components/datePicker';
 import Input from '@/app/_components/input';
 import { differenceInDays } from 'date-fns';
+import { useRouter } from 'next/navigation';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
 interface TripReservationProps {
@@ -37,6 +38,8 @@ const TripReservation = ({
 		watch,
 		setError,
 	} = useForm<TripReservationForm>();
+
+	const router = useRouter();
 
 	const onSubmit: TripReservationSubmitHandler = async data => {
 		const response = await fetch('http://localhost:3000/api/trips/check', {
@@ -77,6 +80,12 @@ const TripReservation = ({
 		// 		message: 'Data inválida.',
 		// 	});
 		// }
+
+		router.push(
+			`/tripDetail/${tripId}/confirmation?startDate=${data.startDate?.toISOString()}&endDate=${data.endDate?.toISOString()}&guests=${
+				data.guests
+			}`
+		);
 	};
 
 	const startDate = watch('startDate');
@@ -143,7 +152,7 @@ const TripReservation = ({
 							message: 'Número de hóspedes é obrigatório',
 						},
 						max: {
-							value: maxGuests,
+							value: maxGuests ?? 0,
 							message: `Número de hóspedes não pode ser maior que ${maxGuests}.`,
 						},
 					})}
@@ -154,7 +163,7 @@ const TripReservation = ({
 				<div className='flex justify-between mt-2'>
 					<p className='text-sm font-medium text-primaryDarker'>Total:</p>
 					<p className='text-sm font-medium text-primaryDarker'>
-						R$ {startDate && endDate ? differenceInDays(endDate, startDate) * pricePerDay : 'R$ 0.00'}
+						R$ {startDate && endDate ? differenceInDays(endDate, startDate) * pricePerDay : '0'}
 					</p>
 				</div>
 
