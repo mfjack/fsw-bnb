@@ -142,6 +142,10 @@ const TripReservation = ({
 							value: true,
 							message: 'Número de hóspedes é obrigatório',
 						},
+						max: {
+							value: maxGuests,
+							message: `Número de hóspedes não pode ser maior que ${maxGuests}.`,
+						},
 					})}
 					error={!!errors.guests}
 					errorMessage={errors.guests?.message?.toString()}
