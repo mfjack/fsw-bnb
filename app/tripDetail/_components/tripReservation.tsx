@@ -4,27 +4,79 @@ import Button from '@/app/_components/button';
 import DatePicker from '@/app/_components/datePicker';
 import Input from '@/app/_components/input';
 import { differenceInDays } from 'date-fns';
-import { difference } from 'next/dist/build/utils';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
 interface TripReservationProps {
+	tripId: string;
 	tripStartDate: Date;
 	tripEndDate: Date;
 	maxGuests?: number;
 	pricePerDay: number;
 }
 
-const TripReservation = ({ maxGuests, tripStartDate, tripEndDate, pricePerDay }: TripReservationProps) => {
+interface TripReservationForm {
+	guests: number;
+	startDate: Date;
+	endDate: Date;
+}
+
+type TripReservationSubmitHandler = SubmitHandler<TripReservationForm>;
+
+const TripReservation = ({
+	tripId,
+	maxGuests,
+	tripStartDate,
+	tripEndDate,
+	pricePerDay,
+}: TripReservationProps) => {
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 		control,
 		watch,
-	} = useForm();
+		setError,
+	} = useForm<TripReservationForm>();
 
-	const onSubmit = (data: any) => {
-		console.log({ data });
+	const onSubmit: TripReservationSubmitHandler = async data => {
+		const response = await fetch('http://localhost:3000/api/trips/check', {
+			method: 'POST',
+			body: Buffer.from(
+				JSON.stringify({
+					startDate: data.startDate,
+					endDate: data.endDate,
+					tripId,
+				})
+			),
+		});
+
+		const res = await response.json();
+
+		if (res?.error?.code === 'TRIP_ALREADY_RESERVED') {
+			setError('startDate', {
+				type: 'manual',
+				message: 'Esta data já está reservada.',
+			});
+
+			return setError('endDate', {
+				type: 'manual',
+				message: 'Esta data já está reservada.',
+			});
+		}
+
+		if (res?.error?.code === 'INVALID_START_DATE') {
+			return setError('startDate', {
+				type: 'manual',
+				message: 'Data inválida.',
+			});
+		}
+
+		// if (res?.error?.code === 'INVALID_END_DATE') {
+		// 	return setError('endDate', {
+		// 		type: 'manual',
+		// 		message: 'Data inválida.',
+		// 	});
+		// }
 	};
 
 	const startDate = watch('startDate');
@@ -42,7 +94,7 @@ const TripReservation = ({ maxGuests, tripStartDate, tripEndDate, pricePerDay }:
 						rules={{
 							required: {
 								value: true,
-								message: 'Data inicial é obrigatória',
+								message: 'Data inicial é obrigatória',
 							},
 						}}
 						control={control}
@@ -54,6 +106,7 @@ const TripReservation = ({ maxGuests, tripStartDate, tripEndDate, pricePerDay }:
 								selected={field.value}
 								error={!!errors.startDate}
 								errorMessage={errors.startDate?.message?.toString()}
+								minDate={startDate}
 							/>
 						)}
 					/>
@@ -64,7 +117,7 @@ const TripReservation = ({ maxGuests, tripStartDate, tripEndDate, pricePerDay }:
 						rules={{
 							required: {
 								value: true,
-								message: 'Data final é obrigatória',
+								message: 'Data final é obrigatória',
 							},
 						}}
 						render={({ field }) => (
@@ -87,7 +140,7 @@ const TripReservation = ({ maxGuests, tripStartDate, tripEndDate, pricePerDay }:
 					{...register('guests', {
 						required: {
 							value: true,
-							message: 'Número de hóspedes é obrigatório',
+							message: 'Número de hóspedes é obrigatório',
 						},
 					})}
 					error={!!errors.guests}
