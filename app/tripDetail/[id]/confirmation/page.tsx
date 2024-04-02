@@ -3,37 +3,46 @@
 import { Trip } from '@prisma/client';
 import { format } from 'date-fns';
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { ptBR } from 'date-fns/locale/pt-BR';
 import Button from '@/app/_components/button';
+import { useSession } from 'next-auth/react';
 
 const TripConfirmation = ({ params }: { params: { tripId: string } }) => {
-	// const [trip, setTrip] = useState<Trip | null>();
-	// const [ totalPrice, setTotalPrice ] = useState<number>(0);
+	const [trip, setTrip] = useState<Trip | null>();
+	const [totalPrice, setTotalPrice] = useState<number>(0);
+
+	const router = useRouter();
+
+	const { status } = useSession();
 
 	const searchParams = useSearchParams();
 
-	// useEffect(() => {
-	// 	const fetchTrip = async () => {
-	// 		const response = await fetch(`/api/trips/check`, {
-	// 			method: 'POST',
-	// 			body: JSON.stringify({
-	// 				tripId: params.tripId,
-	// 				startDate: searchParams.get('startDate'),
-	// 				endDate: searchParams.get('endDate'),
-	// 			}),
-	// 		});
+	useEffect(() => {
+		const fetchTrip = async () => {
+			const response = await fetch(`/api/trips/check`, {
+				method: 'POST',
+				body: JSON.stringify({
+					tripId: params.tripId,
+					startDate: searchParams.get('startDate'),
+					endDate: searchParams.get('endDate'),
+				}),
+			});
 
-	// 		const { trip, totalPrice } = await response.json();
+			const { trip, totalPrice } = await response.json();
 
-	// 		setTrip(trip);
-	// 		setTotalPrice(totalPrice);
-	// 	};
+			setTrip(trip);
+			setTotalPrice(totalPrice);
+		};
 
-	// 	fetchTrip();
-	// }, []);
+		if (status === 'unauthenticated') {
+			router.push('/');
+		}
+
+		fetchTrip();
+	}, [status]);
 
 	// if (!trip) return null;
 
@@ -42,7 +51,7 @@ const TripConfirmation = ({ params }: { params: { tripId: string } }) => {
 	const guests = searchParams.get('guests') as string;
 
 	return (
-		<section className='container mx-auto p-5'>
+		<section className='container mx-auto p-5 h-full'>
 			<h1 className='text-primaryDarker text-xl font-semibold'>Sua viagem!</h1>
 
 			<div className='flex flex-col p-5 mt-5 border-grayLighter border-solid border shadow-lg'>
