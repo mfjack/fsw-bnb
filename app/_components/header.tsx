@@ -22,6 +22,8 @@ const Header = () => {
 		setMenuIsOpen(!menuIsOpen);
 	};
 
+	const handleMyTripsClick = () => {};
+
 	return (
 		<header className='container mx-auto p-5 py-0 h-20 flex justify-between items-center'>
 			<Link href='/'>
@@ -59,9 +61,14 @@ const Header = () => {
 					/>
 
 					{menuIsOpen && (
-						<div className='z-50 absolute right-0 top-14 w-full h-full flex flex-col justify-center items-center bg-white border border-solid rounded-lg shadow-md p-2'>
+						<div className='z-50 absolute right-0 top-14 w-full h-[100px] flex flex-col justify-center items-center bg-white border border-solid rounded-lg shadow-md p-2'>
+							<Link href='/myTrips'>
+								<button className='text-primary pb-2 border-b border-grayLighter text-sm font-semibold'>
+									Minhas viagens
+								</button>
+							</Link>
 							<button
-								className='text-primary text-sm font-semibold'
+								className='text-primary text-sm font-semibold pt-2'
 								onClick={handleLogoutClick}
 							>
 								Logout
