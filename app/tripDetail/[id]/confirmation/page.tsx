@@ -31,10 +31,16 @@ const TripConfirmation = ({ params }: { params: { tripId: string } }) => {
 				}),
 			});
 
-			const { trip, totalPrice } = await response.json();
+			const res = await response.json();
 
-			setTrip(trip);
-			setTotalPrice(totalPrice);
+			if (res?.error) {
+				return router.push('/');
+			}
+
+			const { trip, totalPrice } = res;
+
+			setTrip(res.trip);
+			setTotalPrice(res.totalPrice);
 		};
 
 		if (status === 'unauthenticated') {
@@ -42,7 +48,7 @@ const TripConfirmation = ({ params }: { params: { tripId: string } }) => {
 		}
 
 		fetchTrip();
-	}, [status]);
+	}, [status, searchParams, params, router]);
 
 	// if (!trip) return null;
 
