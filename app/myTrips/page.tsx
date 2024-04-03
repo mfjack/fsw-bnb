@@ -1,13 +1,17 @@
 'use client';
 
-import { TripReservation } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { useSession } from 'next-auth/react';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import UserReservationItem from './_components/userReservationItem';
 
 const MyTrips = () => {
-	const [reservation, setReservation] = useState<TripReservation[]>([]);
+	const [reservations, setReservations] = useState<
+		Prisma.TripReservationGetPayload<{
+			include: { trip: true };
+		}>[]
+	>([]);
 
 	const { status, data } = useSession();
 
@@ -24,29 +28,22 @@ const MyTrips = () => {
 			);
 			const json = await response.json();
 
-			setReservation(json);
+			setReservations(json);
 		};
 
 		fetchReservations();
-	}, [status]);
+	}, [status, data, router]);
 
 	return (
 		<section className='container mx-auto p-5'>
-			<h1 className='text-primaryDarker font-semibold text-xl'>Minhas Viagens</h1>
+			<h1 className='text-primaryDarker text-xl font-semibold'>Minhas Viagens</h1>
 
-			<div className='flex border p-5 border-solid border-grayLighter w-full mt-5'>
-				<Image
-					src='/divider.svg'
-					alt='Divisor'
-					width={48}
-					height={48}
+			{reservations.map(reservation => (
+				<UserReservationItem
+					key={reservation.id}
+					reservation={reservation}
 				/>
-
-				<div>
-					<h2>Hotel Maravista</h2>
-					<p>Maravista, RJ</p>
-				</div>
-			</div>
+			))}
 		</section>
 	);
 };
