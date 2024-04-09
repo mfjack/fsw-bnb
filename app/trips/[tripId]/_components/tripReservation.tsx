@@ -42,7 +42,7 @@ const TripReservation = ({
 	const router = useRouter();
 
 	const onSubmit: TripReservationSubmitHandler = async data => {
-		const response = await fetch('http://localhost:3000/api/trips/check', {
+		const response = await fetch('/api/trips/check', {
 			method: 'POST',
 			body: Buffer.from(
 				JSON.stringify({
@@ -82,7 +82,7 @@ const TripReservation = ({
 		// }
 
 		router.push(
-			`/tripDetail/${tripId}/confirmation?startDate=${data.startDate?.toISOString()}&endDate=${data.endDate?.toISOString()}&guests=${
+			`/trips/${tripId}/confirmation?startDate=${data.startDate?.toISOString()}&endDate=${data.endDate?.toISOString()}&guests=${
 				data.guests
 			}`
 		);

@@ -1,15 +1,18 @@
 'use client';
 
-import { Trip } from '@prisma/client';
-import { format } from 'date-fns';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { format } from 'date-fns';
 import ReactCountryFlag from 'react-country-flag';
 import { ptBR } from 'date-fns/locale/pt-BR';
-import Button from '@/app/_components/button';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+
+import { Trip } from '@prisma/client';
 import { toast } from 'react-toastify';
+import { loadStripe } from '@stripe/stripe-js';
+import Button from '@/app/_components/button';
 
 const TripConfirmation = ({ params }: { params: { tripId: string } }) => {
 	const [trip, setTrip] = useState<Trip | null>();
@@ -38,8 +41,6 @@ const TripConfirmation = ({ params }: { params: { tripId: string } }) => {
 				return router.push('/');
 			}
 
-			const { trip, totalPrice } = res;
-
 			setTrip(res.trip);
 			setTotalPrice(res.totalPrice);
 		};
@@ -51,10 +52,10 @@ const TripConfirmation = ({ params }: { params: { tripId: string } }) => {
 		fetchTrip();
 	}, [status, searchParams, params, router]);
 
-	// if (!trip) return null;
+	if (!trip) return null;
 
-	const handreBuyClick = async () => {
-		const res = await fetch('http://localhost:3000/api/trips/reservation', {
+	const handleBuyClick = async () => {
+		const res = await fetch('/api/payment', {
 			method: 'POST',
 			body: Buffer.from(
 				JSON.stringify({
@@ -62,52 +63,56 @@ const TripConfirmation = ({ params }: { params: { tripId: string } }) => {
 					startDate: searchParams.get('startDate'),
 					endDate: searchParams.get('endDate'),
 					guests: Number(searchParams.get('guests')),
-					userId: (data?.user as any)?.id,
-					totalPaid: totalPrice,
+					totalPrice,
+					coverImage: trip.coverImage,
+					name: trip.name,
+					description: trip.description,
 				})
 			),
 		});
 
-		if (res.ok) {
-			return toast.error('Erro ao reservar sua viagem, tente novamente!', {
-				position: 'top-center',
-			});
+		if (!res.ok) {
+			return toast.error('Ocorreu um erro ao realizar a reserva!', { position: 'bottom-center' });
 		}
 
-		router.push('/');
+		const { sessionId } = await res.json();
 
-		toast.success('Viagem reservada com sucesso!', { position: 'top-center' });
+		const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY as string);
+
+		await stripe?.redirectToCheckout({ sessionId });
+
+		toast.success('Reserva realizada com sucesso!', { position: 'bottom-center' });
 	};
 
 	const startDate = new Date(searchParams.get('startDate') as string);
 	const endDate = new Date(searchParams.get('endDate') as string);
-	const guests = searchParams.get('guests') as string;
+	const guests = searchParams.get('guests');
 
 	return (
-		<section className='container mx-auto p-5 h-full'>
-			<h1 className='text-primaryDarker text-xl font-semibold'>Sua viagem!</h1>
+		<div className='container mx-auto p-5 lg:max-w-[600px]'>
+			<h1 className='font-semibold text-xl text-primaryDarker'>Sua viagem</h1>
 
-			<div className='flex flex-col p-5 mt-5 border-grayLighter border-solid border shadow-lg'>
-				<div className='flex items-center gap-3 pb-5 border-b border-graylighter border-solid'>
+			{/* CARD */}
+			<div className='flex flex-col p-5 mt-5 border-grayLighter border-solid border shadow-lg rounded-lg'>
+				<div className='flex items-center gap-3 pb-5 border-b border-grayLighter border-solid'>
 					<div className='relative h-[106px] w-[124px]'>
 						<Image
-							className='rounded-lg'
-							src='/hotel.svg'
-							alt='Hotel'
-							style={{ objectFit: 'cover' }}
+							src={trip.coverImage}
 							fill
+							style={{ objectFit: 'cover' }}
+							className='rounded-lg'
+							alt={trip.name}
 						/>
 					</div>
 
 					<div className='flex flex-col'>
-						<h2 className='text-xl text-primaryDarker font-semibold'>Fuck</h2>
-
+						<h2 className='text-xl text-primaryDarker font-semibold'>{trip.name}</h2>
 						<div className='flex items-center gap-1'>
-							{/* <ReactCountryFlag
+							<ReactCountryFlag
 								countryCode={trip.countryCode}
 								svg
-							/> */}
-							<p className='text-xs text-grayPrimary'>Fim do mundo</p>
+							/>
+							<p className='text-xs text-grayPrimary underline'>{trip.location}</p>
 						</div>
 					</div>
 				</div>
@@ -116,29 +121,28 @@ const TripConfirmation = ({ params }: { params: { tripId: string } }) => {
 
 				<div className='flex justify-between mt-1'>
 					<p className='text-primaryDarker'>Total:</p>
-					<p className='font-medium'>R$ 100</p>
+					<p className='font-medium'>R${totalPrice}</p>
 				</div>
 			</div>
 
-			<div className='flex-flex-col mt-5 text-primaryDarker'>
+			<div className='flex flex-col mt-5 text-primaryDarker'>
 				<h3 className='font-semibold'>Data</h3>
+				<div className='flex items-center gap-1 mt-1'>
+					<p>{format(startDate, "dd 'de' MMMM", { locale: ptBR })}</p>
+					<p>{format(endDate, "dd 'de' MMMM", { locale: ptBR })}</p>
+				</div>
 
-				<p>
-					{format(startDate, "dd 'de' MMMM", { locale: ptBR })} -
-					{format(endDate, "dd 'de' MMMM", { locale: ptBR })}
-				</p>
-
-				<h3 className='font-semibold mt-3'>Hóspedes</h3>
-				<p>guests hóspedes</p>
+				<h3 className='font-semibold mt-5'>Hóspedes</h3>
+				<p>{guests} hóspedes</p>
 
 				<Button
-					className='mt-5 w-full'
-					onClick={handreBuyClick}
+					className='mt-5'
+					onClick={handleBuyClick}
 				>
-					Finalizar reserva
+					Finalizar Compra
 				</Button>
 			</div>
-		</section>
+		</div>
 	);
 };
 
