@@ -1,5 +1,5 @@
 import { prisma } from '@/app/_lib/prisma';
-import TripItem from '@/app/tripDetail/_components/tripItem';
+import TripItem from '@/app/_components/tripItem';
 import { Trip } from '@prisma/client';
 
 const getTrips = async () => {
