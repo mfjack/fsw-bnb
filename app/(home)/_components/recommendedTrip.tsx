@@ -1,35 +1,24 @@
-import TripItem from '@/app/_components/tripItem';
-import { prisma } from '@/app/_lib/prisma';
-import { Trip } from '@prisma/client';
-import React from 'react';
-
-async function getTrips() {
-	const trips = await prisma.trip.findMany({});
-
-	return trips;
-}
+import TripItem from "@/app/_components/tripItem";
+import { db } from "@/app/_lib/prisma";
 
 const RecommendedTrips = async () => {
-	const data = await getTrips();
+   const trips = await db.trip.findMany({});
 
-	return (
-		<div className='container mx-auto p-5'>
-			<div className='flex items-center'>
-				<div className='w-full h-[1px] bg-grayLighter'></div>
-				<h2 className='px-5 font-medium text-grayPrimary whitespace-nowrap'>Destinos Recomendados</h2>
-				<div className='w-full h-[1px] bg-grayLighter'></div>
-			</div>
+   return (
+      <div className="p-5">
+         <div className="flex gap-2 items-center">
+            <div className="w-full h-[1px] bg-grayPrimary"></div>
+            <p className="text-grayPrimary font-medium whitespace-nowrap">Destinos Recomendados</p>
+            <div className="w-full h-[1px] bg-grayPrimary"></div>
+         </div>
 
-			<div className='flex flex-col items-center mt-5 lg:mt-12 gap-5 lg:flex-row gap lg:flex-wrap lg:justify-center lg:gap-10'>
-				{data.map((trip: Trip) => (
-					<TripItem
-						key={trip.id}
-						trip={trip}
-					/>
-				))}
-			</div>
-		</div>
-	);
+         <div className="flex flex-col items-center gap-5 mt-5">
+            {trips.map((trip) => (
+               <TripItem key={trip.id} trip={trip} />
+            ))}
+         </div>
+      </div>
+   );
 };
 
 export default RecommendedTrips;

@@ -22,8 +22,6 @@ const Header = () => {
       setMenuIsOpen(!menuIsOpen);
    };
 
-   const handleMyTripsClick = () => {};
-
    return (
       <header className="container mx-auto p-5 py-0 h-20 flex justify-between items-center">
          <Link href="/">
@@ -43,9 +41,9 @@ const Header = () => {
                <Image className="rounded-full shadow-md" src={data.user.image!} alt={data.user.name!} width={35} height={35} />
 
                {menuIsOpen && (
-                  <div className="z-50 absolute right-0 top-14 w-full h-[100px] flex flex-col justify-center items-center bg-white border border-solid rounded-lg shadow-md p-2">
-                     <Link href="/myTrips" onClick={() => setMenuIsOpen(false)}>
-                        <button className="text-primary pb-2 border-b border-grayLighter text-sm font-semibold">Minhas viagens</button>
+                  <div className="z-50 absolute text-center right-0 top-14 w-full h-[100px] flex flex-col justify-center items-center bg-white border border-solid rounded-lg shadow-md p-2">
+                     <Link className="text-primary pb-2 border-b border-grayLighter text-sm font-semibold" href="/myTrips" onClick={() => setMenuIsOpen(false)}>
+                        Minhas viagens
                      </Link>
                      <button className="text-primary text-sm font-semibold pt-2" onClick={handleLogoutClick}>
                         Logout
