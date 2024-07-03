@@ -1,4 +1,4 @@
-import { prisma } from '../_lib/prisma';
+import { prisma } from '../app/_lib/prisma';
 
 async function main() {
 	await prisma.trip.createMany({
