@@ -5,7 +5,7 @@ const RecommendedTrips = async () => {
    const trips = await db.trip.findMany({});
 
    return (
-      <div className="p-5">
+      <>
          <div className="flex gap-2 items-center">
             <div className="w-full h-[1px] bg-grayPrimary"></div>
             <p className="text-grayPrimary font-medium whitespace-nowrap">Destinos Recomendados</p>
@@ -17,7 +17,7 @@ const RecommendedTrips = async () => {
                <TripItem key={trip.id} trip={trip} />
             ))}
          </div>
-      </div>
+      </>
    );
 };
 

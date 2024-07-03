@@ -3,14 +3,14 @@ import Link from "next/link";
 
 const QuickSearch = () => {
    return (
-      <div className="px-5">
+      <>
          <div className="flex gap-2 items-center">
             <div className="w-full h-[1px] bg-grayPrimary"></div>
             <p className="text-grayPrimary font-medium whitespace-nowrap">Tente pesquisar por</p>
             <div className="w-full h-[1px] bg-grayPrimary"></div>
          </div>
 
-         <div className="flex w-full mt-5 justify-between">
+         <div className="flex w-full py-5 justify-around">
             <Link href={"/trips/search?text=hotel"} className="flex flex-col items-center gap-1">
                <Image src="/hotel-icon.png" alt="Hotel" width={32} height={32} />
                <p className="text-primaryDarker text-sm">Hotel</p>
@@ -28,7 +28,7 @@ const QuickSearch = () => {
                <p className="text-primaryDarker text-sm">Pousada</p>
             </Link>
          </div>
-      </div>
+      </>
    );
 };
 
