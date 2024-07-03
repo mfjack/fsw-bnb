@@ -3,10 +3,10 @@
 import TripItem from "@/app/_components/tripItem";
 import { Trip } from "@prisma/client";
 import { useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 const Trips = () => {
-   const [trips, setTrips] = React.useState<Trip[]>([]);
+   const [trips, setTrips] = useState<Trip[]>([]);
 
    const searchParams = useSearchParams();
 
@@ -29,11 +29,13 @@ const Trips = () => {
             {trips.length > 0 ? "Listamos as melhores viagens pra você!" : "Não encontramos nada nos seus parâmetros! =("}
          </h2>
 
-         <div className="flex flex-col gap-4 lg:grid lg:grid-cols-4 lg:gap-10 lg:mt-6 lg:pb-16">
-            {trips?.map((trip) => (
-               <TripItem key={trip.id} trip={trip} />
-            ))}
-         </div>
+         <Suspense>
+            <div className="flex flex-col gap-4 lg:grid lg:grid-cols-4 lg:gap-10 lg:mt-6 lg:pb-16">
+               {trips?.map((trip) => (
+                  <TripItem key={trip.id} trip={trip} />
+               ))}
+            </div>
+         </Suspense>
       </div>
    );
 };
