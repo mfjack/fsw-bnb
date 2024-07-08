@@ -13,15 +13,7 @@ const TripItem = ({ trip }: TripItemProps) => {
       <Link href={`/trips/${trip.id}`}>
          <div className="flex flex-col">
             <div className="relative h-[280px] w-[280px]">
-               <Image
-                  src={trip.coverImage}
-                  className="rounded-lg shadow-md"
-                  style={{
-                     objectFit: "cover",
-                  }}
-                  fill
-                  alt={trip.name}
-               />
+               <Image src={trip.coverImage} alt={trip.name} className="rounded-lg shadow-md bg-cover" fill />
             </div>
 
             <h3 className="text-primaryDarker font-medium text-sm mt-2">{trip.name}</h3>
