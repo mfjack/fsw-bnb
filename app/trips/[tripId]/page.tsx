@@ -4,7 +4,6 @@ import TripReservation from "./_components/tripReservation";
 import TripHighlights from "./_components/tripHighlights";
 import TripLocation from "./_components/tripLocation";
 import TripDescription from "./_components/tripDescription";
-import { Suspense } from "react";
 
 const TripDetailsPage = async ({ params }: { params: { tripId: string } }) => {
    const trip = await db.trip.findUnique({
@@ -20,9 +19,7 @@ const TripDetailsPage = async ({ params }: { params: { tripId: string } }) => {
    return (
       <>
          <TripHeader trip={trip} />
-         <Suspense>
-            <TripReservation tripId={trip.id} tripStartDate={trip.startDate} tripEndDate={trip.endDate} maxGuests={trip.maxGuests} pricePerDay={trip.pricePerDay as any} />
-         </Suspense>
+         <TripReservation tripId={trip.id} tripStartDate={trip.startDate} tripEndDate={trip.endDate} maxGuests={trip.maxGuests} pricePerDay={trip.pricePerDay as any} />
          <TripDescription description={trip.description} />
          <TripHighlights highlights={trip.highlights} />
          <TripLocation location={trip.location} locationDescription={trip.locationDescription} />
