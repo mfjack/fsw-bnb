@@ -11,7 +11,6 @@ import { useRouter } from "next/navigation";
 
 import { Trip } from "@prisma/client";
 import { toast } from "react-toastify";
-import { loadStripe } from "@stripe/stripe-js";
 import Button from "@/app/_components/button";
 
 const TripConfirmation = ({ params }: { params: { tripId: string } }) => {
