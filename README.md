@@ -4,7 +4,7 @@
 
 ![341214825-5b8c9cca-ab15-4c79-8e40-294a63c4ae0d](https://github.com/user-attachments/assets/cf9a568b-1a17-4be3-9515-ce0b4aae35ec)
 
-![Uploading 341214903-aa370970-77ee-43a8-afe6-cc96ecc4d8fe.png…]()
+![341214903-aa370970-77ee-43a8-afe6-cc96ecc4d8fe](https://github.com/user-attachments/assets/325b8d8d-7140-4cc7-b7c2-5fdd86d90899)
 
 ## Stack utilizada
 
