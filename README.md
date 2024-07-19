@@ -2,8 +2,9 @@
 
 É uma plataforma de aluguel de casas e apartamentos inspirada no airbnb.
 
-![Home](https://github.com/mfjack/fsw-bnb/assets/105893969/5b8c9cca-ab15-4c79-8e40-294a63c4ae0d)
-![Hospedagem](https://github.com/mfjack/fsw-bnb/assets/105893969/aa370970-77ee-43a8-afe6-cc96ecc4d8fe)
+![341214825-5b8c9cca-ab15-4c79-8e40-294a63c4ae0d](https://github.com/user-attachments/assets/cf9a568b-1a17-4be3-9515-ce0b4aae35ec)
+
+![Uploading 341214903-aa370970-77ee-43a8-afe6-cc96ecc4d8fe.png…]()
 
 ## Stack utilizada
 
